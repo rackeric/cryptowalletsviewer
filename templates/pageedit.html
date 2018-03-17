@@ -1,0 +1,22 @@
+{% include 'header.html' %}
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+<h3>Edit Page</h3>
+<form method="POST">
+<div class="form-group">
+  <label for="title">Title:</label>
+  <input type="text" class="form-control" name="title" value="{{ page.title }}">
+</div>
+<div class="form-group">
+  <label for="content">Content:</label>
+  <textarea class="form-control" rows="5" name="content">{{ page.content }}</textarea>
+</div>
+<input type="submit" value="Save" class="btn btn-default pull-right"/>
+</form>
+
+  </div>
+</div>
+
+{% include 'footer.html' %}

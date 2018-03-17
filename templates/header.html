@@ -1,0 +1,44 @@
+<html>
+<head>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">{{ brand.brand }}</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li {%- if request.path == "/" %} class="active"{% endif %}><a href="/">Home</a></li>
+      {% for page in pages %}
+      <li {%- if page.mongo_id|string in request.path %} class="active"{% endif %}><a href="/pages/{{ page.mongo_id }}">{{ page.title }}</a></li>
+      {% endfor %}
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      {% if not user %}
+        <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li {%- if request.path == "/login/" %} class="active"{% endif %}><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      {% elif user.username == 'admin' %}
+        <li {%- if request.path == "/admin/" %} class="active"{% endif %}><a href="/admin"><span class="glyphicon glyphicon-cog"></span> {{ user.username }}</a></li>
+        <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      {% else %}
+      <li {%- if request.path == "/profile/" %} class="active"{% endif %}><a href="/profile"><span class="glyphicon glyphicon-cog"></span> {{ user.username }}</a></li>
+      <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<!-- <div class="container"> -->
+<div>

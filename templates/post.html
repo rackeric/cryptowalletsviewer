@@ -1,0 +1,44 @@
+{% include 'header.html' %}
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    <h1>{{ post.title }}<small> posted on {{ post.created.strftime('%Y-%m-%d') }}</small></h1>
+    <pre style="white-space: pre-wrap;">{{ post.comment|safe }}</pre>
+
+    <hr>
+    <h3>{{ ccount }} Comments</h3>
+    {% for comment in comments %}
+      <div class="well">
+        <div class="pull-right">{{ comment.created.strftime('%Y-%m-%d') }}</div>
+        <br />
+        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>  <a href="mailto:{{ comment.email }}">{{ comment.name }}</a>: {{ comment.comment }}
+      </div>
+    {% endfor %}
+
+    <hr>
+
+    <h3>Leave a Comment</h3>
+    <form action="/comment/{{ post.mongo_id }}" method="POST">
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea class="form-control" rows="5" name="comment"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="title">Name:</label>
+      <input type="text" class="form-control" name="name">
+    </div>
+    <div class="form-group">
+      <label for="title">Email:</label>
+      <input type="text" class="form-control" name="email">
+    </div>
+    <input type="submit" value="Post Comment" class="btn btn-default pull-right"/>
+    </form>
+
+    <br />
+
+
+  </div>
+</div>
+
+{% include 'footer.html' %}

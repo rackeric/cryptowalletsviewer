@@ -1,0 +1,21 @@
+{% include 'header.html' %}
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <form method="POST">
+      <h2>Create Account</h2>
+      <label for="username" class="sr-only">Username</label>
+      <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+      <br \>
+      <label for="password" class="sr-only">Password</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+      <br>
+      <label for="password" class="sr-only">Confirm Password</label>
+      <input type="password" id="confirmpassword" name="confirmpassword" class="form-control" placeholder="Confirm Password" required>
+      <br>
+      <button class="btn btn-lg btn-default btn-block" type="submit">Create Account</button>
+    </form>
+  </div>
+</div>
+
+{% include 'footer.html' %}

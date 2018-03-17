@@ -1,0 +1,21 @@
+{% include 'header.html' %}
+
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+
+    <h3>Change Password</h3>
+    <form method="POST">
+
+      <div class="form-group">
+        <input type="password" class="form-control" name="password" placeholder="Password" required>
+        <br>
+        <input type="password" id="confirmpassword" name="confirmpassword" class="form-control"placeholder="Confirm Password" required>
+      </div>
+      <input type="submit" value="Save" class="btn btn-danger pull-right"/>
+
+    </form>
+
+  </div>
+</div>
+
+{% include 'footer.html' %}

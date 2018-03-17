@@ -1,0 +1,97 @@
+{% include 'header.html' %}
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+<h3>Set Brand</h3>
+<form action="/setbrand" method="POST">
+<div class="form-group">
+  <label for="blogTitle">Brand:</label>
+  <input type="text" class="form-control" name="brand" value="{{ brand.brand }}">
+</div>
+<input type="submit" value="Save" class="btn btn-default pull-right"/>
+</form>
+
+<br />
+<hr>
+
+<h3>Set Blog Title</h3>
+<form action="/title" method="POST">
+<div class="form-group">
+  <label for="blogTitle">Title:</label>
+  <input type="text" class="form-control" name="blogTitle" value="{{ blog.title }}">
+</div>
+<div class="form-group">
+  <label for="blogSubTitle">SubTitle:</label>
+  <input type="text" class="form-control" name="blogSubTitle" value="{{ blog.subtitle }}">
+</div>
+<input type="submit" value="Save" class="btn btn-default pull-right"/>
+</form>
+
+<br />
+<hr>
+
+<h3>Add Blog Post</h3>
+<form method="POST">
+<div class="form-group">
+  <label for="title">Title:</label>
+  <input type="text" class="form-control" name="title">
+</div>
+<div class="form-group">
+  <label for="comment">Comment:</label>
+  <textarea class="form-control" rows="5" name="comment"></textarea>
+</div>
+<input type="submit" value="Create" class="btn btn-default pull-right"/>
+</form>
+
+<br />
+<hr>
+
+<h3>Blog Posts</h3>
+{% for post in posts %}
+    <li>{{ post.title }} [<a href="/postedit/{{ post.mongo_id }}">Edit</a>] [<a href="/postremove/{{ post.mongo_id }}">Delete</a>]</li>
+{% endfor %}
+
+<hr>
+
+<h3>Add Page</h3>
+<form action="/pageadd" method="POST">
+<div class="form-group">
+  <label for="title">Title:</label>
+  <input type="text" class="form-control" name="title">
+</div>
+<div class="form-group">
+  <label for="comment">Content:</label>
+  <textarea class="form-control" rows="5" name="content"></textarea>
+</div>
+<input type="submit" value="Create" class="btn btn-default pull-right"/>
+</form>
+
+<br />
+<hr>
+
+<h3>Pages</h3>
+{% for page in pages %}
+    <li>{{ page.title }} [<a href="/pageedit/{{ page.mongo_id }}">Edit</a>] [<a href="/pageremove/{{ page.mongo_id }}">Delete</a>]</li>
+{% endfor %}
+
+<br />
+<hr>
+
+<h3>Change Password</h3>
+<form action="/changepass" method="POST">
+<div class="form-group">
+  <label for="title">Username:</label>
+  <input type="text" class="form-control" name="username" value="admin">
+</div>
+<div class="form-group">
+  <label for="password">Password:</label>
+  <input type="password" class="form-control" name="password">
+</div>
+<input type="submit" value="Save" class="btn btn-danger pull-right"/>
+</form>
+
+  </div>
+</div>
+
+{% include 'footer.html' %}

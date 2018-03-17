@@ -1,0 +1,103 @@
+{% include 'header.html' %}
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+<h1>{{ blog.title }}
+<br />
+<small>{{ blog.subtitle }}</small></h1>
+
+<br />
+
+<a href="/walletrefreshall" type="button" class="btn btn-info btn-xs pull-right">
+  <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Refresh All
+</a>
+
+<br /><br />
+
+<table class="table">
+  {% for wallet in wallets %}
+  <tr>
+    <td><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/' + wallet.coin + '.png') }}"></td>
+    <td>{{ wallet.coin }}</td>
+    <td>{{ wallet.address }}</td>
+
+    <!-- <td>{{ getBalance(wallet) | float }}</td> -->
+    {% if wallet.balance == 99999999 %}
+      <td>{{ wallet.error }}</td>
+    {% else %}
+      <td>{{ '%0.8f'| format(getBalance(wallet)|float) }}</td>
+    {% endif %}
+
+    <td><a href="/walletrefresh/{{ wallet.mongo_id }}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a></td>
+
+    <!-- <td><a href="/walletremove/{{ wallet.mongo_id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td> -->
+    <td><a data-toggle="modal" data-target="#myModal{{ wallet.mongo_id }}"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+  </tr>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal{{ wallet.mongo_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Remove Wallet From List</h4>
+        </div>
+        <div class="modal-body">
+          Confirm the removal {{ wallet.coin }} wallet {{ wallet.address }} from your list.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/walletremove/{{ wallet.mongo_id }}'">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  {% endfor %}
+</table>
+
+<br />
+
+<h3>Add Wallet Address</h3>
+<form action="/addaddress" method="POST">
+  <div class="form-group">
+    <label class="radio-inline"><input type="radio" name="coin" value="btc"><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/btc.png') }}"> Bitcoin</label>
+    <label class="radio-inline"><input type="radio" name="coin" value="ltc"><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/ltc.png') }}"> Litecoin</label>
+    <label class="radio-inline"><input type="radio" name="coin" value="eth"><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/eth.png') }}"> Ethereum</label>
+    <label class="radio-inline"><input type="radio" name="coin" value="xrp"><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/xrp.png') }}"> Ripple</label>
+    <label class="radio-inline"><input type="radio" name="coin" value="xlm"><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/xlm.png') }}"> Stellar</label>
+    <label class="radio-inline"><input type="radio" name="coin" value="xvg"><img src="{{ url_for('static', filename = 'images/cryptocurrency-icons/32/color/xvg.png') }}"> Verge</label>
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="text" name="address" placeholder="Wallet Address">
+  </div>
+  <input type="submit" value="Save" class="btn btn-success pull-right"/>
+</form>
+
+<br />
+<br />
+<br />
+
+
+{% for post in posts %}
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <div class="panel-title"><a href="/posts/{{ post.mongo_id }}"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> {{ post.title }}</a>
+      <div class="pull-right">{{ post.created.strftime('%Y-%m-%d') }}</div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <pre style="white-space: pre-wrap;">{{ post.comment|safe }}</pre>
+    <br />
+    <div class="pull-right"><i>{{ get_comment_count(post.mongo_id) }} Comments</i></div>
+  </div>
+</div>
+{% endfor %}
+
+  </div>
+</div>
+
+{% include 'footer.html' %}

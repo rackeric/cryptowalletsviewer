@@ -1,0 +1,5 @@
+Flask
+Flask-Auth
+Flask-MongoAlchemy
+stellar-base
+blocktrail-sdk==1.*
