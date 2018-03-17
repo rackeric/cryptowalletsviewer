@@ -1,7 +1,7 @@
-FROM ubuntu:latest
-MAINTAINER Eric Hernandez "utcodemonkey@hotmail.com"
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
+FROM centos:7
+RUN yum update -y
+RUN yum install -y epel-release
+RUN yum install -y python2-pip python-devel gcc
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
