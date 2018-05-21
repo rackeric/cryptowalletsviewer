@@ -11,7 +11,7 @@ import blocktrail
 app = Flask(__name__)
 
 app.config['MONGOALCHEMY_DATABASE'] = 'cryptowalletsviewer'
-app.config['MONGOALCHEMY_SERVER'] = 'mongo.bashtothefuture.com'
+app.config['MONGOALCHEMY_SERVER'] = 'mongo'
 db = MongoAlchemy(app)
 
 auth = Auth(app, login_url_name='ulogin')
