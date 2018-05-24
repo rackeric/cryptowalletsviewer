@@ -7,12 +7,25 @@ from decimal import *
 import datetime
 import requests
 import blocktrail
+import os
 
 app = Flask(__name__)
 
+if "MONGO_SERVER" in os.environ:
+    app.config['MONGOALCHEMY_SERVER'] = os.environ['MONGO_SERVER']
+else:
+    app.config['MONGOALCHEMY_SERVER'] = 'mongo'
+if "MONGO_USER" in os.environ:
+    app.config['MONGOALCHEMY_USER'] = os.environ['MONGO_USER']
+if "MONGO_PASSWORD" in os.environ:
+    app.config['MONGOALCHEMY_PASSWORD'] = os.environ['MONGO_PASSWORD']
+
 app.config['MONGOALCHEMY_DATABASE'] = 'cryptowalletsviewer'
-app.config['MONGOALCHEMY_SERVER'] = 'mongo'
-db = MongoAlchemy(app)
+
+try:
+    db = MongoAlchemy(app)
+except:
+    print "DATABASE CONNECTION ERROR"
 
 auth = Auth(app, login_url_name='ulogin')
 auth.user_timeout=0
