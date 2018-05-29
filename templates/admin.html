@@ -78,6 +78,14 @@
 <br />
 <hr>
 
+<h3>Users</h3>
+{% for user in users %}
+    <li>{{ user.username }} [<a href="/userremove/{{ user.mongo_id }}">Delete</a>]</li>
+{% endfor %}
+
+<br />
+<hr>
+
 <h3>Change Password</h3>
 <form action="/changepass" method="POST">
 <div class="form-group">

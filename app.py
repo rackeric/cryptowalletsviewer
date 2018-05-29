@@ -63,6 +63,7 @@ class Brand(db.Document):
     brand = db.StringField()
 
 class Wallets(db.Document):
+    userId = db.StringField()
     coin = db.StringField()
     address = db.StringField()
     username = db.StringField()
@@ -205,7 +206,8 @@ def admin():
     brand = Brand.query.first()
     blog = Blog.query.first()
     pages = Page.query
-    return render_template('admin.html', posts=posts, user=get_current_user_data(), brand=brand, blog=blog, pages=pages)
+    users = User.query
+    return render_template('admin.html', posts=posts, user=get_current_user_data(), brand=brand, blog=blog, pages=pages, users=users)
 
 #@login_required()
 def ulogout():
@@ -233,7 +235,11 @@ def title():
 def addaddress():
     myAddress = request.form['address']
     myCoin = request.form['coin']
-    address = Wallets(coin=myCoin, address=myAddress, username=get_current_user_data()["username"], balance=10101010, error='')
+
+    # need to get user mongo_id
+    userId = getUserId(get_current_user_data()["username"])
+
+    address = Wallets(coin=myCoin, address=myAddress, userId=userId, username=get_current_user_data()["username"], balance=10101010, error='')
     address.save()
     return redirect(url_for('index'))
 
@@ -255,6 +261,20 @@ def setbrand():
 def deletepost(id):
     mypost = Post.query.get(id)
     mypost.remove()
+    return redirect(url_for('admin'))
+
+@login_required()
+@app.route('/userremove/<id>', methods=['GET'])
+def deleteuser(id):
+    # first remove users Wallets, then user
+    mywallets = Wallets.query.filter(Wallets.userId == id)
+    for wallet in mywallets:
+        wallet.remove()
+
+    # now delete the user
+    myuser = User.query.get(id)
+    myuser.remove()
+
     return redirect(url_for('admin'))
 
 @login_required()
@@ -498,6 +518,10 @@ def refreshAllWallets():
     for myWallet in wallets:
         refreshSingleWallet(myWallet)
     #return redirect(url_for('index'))
+
+def getUserId(username):
+    user = User.query.filter(User.username == username).first()
+    return str(user.mongo_id)
 
 @login_required()
 @app.route('/walletremove/<id>', methods=['GET'])
