@@ -370,9 +370,13 @@ def setup():
 def changepass():
     username = request.form['username']
     password = request.form['password']
-    user = User.query.filter(User.username == username).first()
-    user.password = password
-    user.save()
+
+    myUser = User.query.filter(User.username==username).first()
+    myAuth = AuthUser(username=username)
+    myAuth.set_and_encrypt_password(password, salt='1234567')
+    myUser.password = myAuth.password
+    myUser.save()
+
     return redirect(url_for('admin'))
 
 @login_required()
@@ -543,7 +547,13 @@ def refreshwalletall():
     refreshAllWallets()
     return redirect(url_for('index'))
 
+@app.route('/.well-known/acme-challenge/h6pQMk-JNEVXgtxOBIauHr12SMvRHWnWLlYfXezoF8U', methods=['GET'])
+def sslVerify():
+    return "h6pQMk-JNEVXgtxOBIauHr12SMvRHWnWLlYfXezoF8U.ZIVlpXUH1RjAE961sshUPDMN5zy9PpCDui4Cpr3pRzE"
 
+
+
+#app.add_url_rule('/.well-known/acme-challenge/h6pQMk-JNEVXgtxOBIauHr12SMvRHWnWLlYfXezoF8U', 'sslVerify', sslVerify, methods=['GET'])
 app.add_url_rule('/', 'index', index, methods=['GET', 'POST'])
 app.add_url_rule('/admin/', 'admin', admin, methods=['GET', 'POST'])
 app.add_url_rule('/profile/', 'profile', profile, methods=['GET', 'POST'])
