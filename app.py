@@ -368,14 +368,18 @@ def setup():
 @login_required()
 @app.route('/changepass', methods=['POST'])
 def changepass():
-    username = request.form['username']
-    password = request.form['password']
 
-    myUser = User.query.filter(User.username==username).first()
-    myAuth = AuthUser(username=username)
-    myAuth.set_and_encrypt_password(password, salt='1234567')
-    myUser.password = myAuth.password
-    myUser.save()
+    if request.method == 'POST':
+        if request.form['password'] == request.form['confirmpassword']:
+            #userId = 0
+            username = get_current_user_data()["username"]
+            password = request.form['password']
+            # query mongo for user
+            myUser = User.query.filter(User.username==username).first()
+            myAuth = AuthUser(username=username)
+            myAuth.set_and_encrypt_password(password, salt='1234567')
+            myUser.password = myAuth.password
+            myUser.save()
 
     return redirect(url_for('admin'))
 
@@ -552,8 +556,6 @@ def sslVerify():
     return "h6pQMk-JNEVXgtxOBIauHr12SMvRHWnWLlYfXezoF8U.ZIVlpXUH1RjAE961sshUPDMN5zy9PpCDui4Cpr3pRzE"
 
 
-
-#app.add_url_rule('/.well-known/acme-challenge/h6pQMk-JNEVXgtxOBIauHr12SMvRHWnWLlYfXezoF8U', 'sslVerify', sslVerify, methods=['GET'])
 app.add_url_rule('/', 'index', index, methods=['GET', 'POST'])
 app.add_url_rule('/admin/', 'admin', admin, methods=['GET', 'POST'])
 app.add_url_rule('/profile/', 'profile', profile, methods=['GET', 'POST'])

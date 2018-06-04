@@ -88,15 +88,14 @@
 
 <h3>Change Password</h3>
 <form action="/changepass" method="POST">
-<div class="form-group">
-  <label for="title">Username:</label>
-  <input type="text" class="form-control" name="username" value="admin">
-</div>
-<div class="form-group">
-  <label for="password">Password:</label>
-  <input type="password" class="form-control" name="password">
-</div>
-<input type="submit" value="Save" class="btn btn-danger pull-right"/>
+
+  <div class="form-group">
+    <input type="password" class="form-control" name="password" placeholder="Password" required>
+    <br>
+    <input type="password" id="confirmpassword" name="confirmpassword" class="form-control"placeholder="Confirm Password" required>
+  </div>
+  <input type="submit" value="Save" class="btn btn-danger pull-right"/>
+
 </form>
 
   </div>
